@@ -13,16 +13,13 @@ form.addEventListener("submit", async (event) => {
   if (formIsValid(post)) {
     try {
       const json = JSON.stringify(post);
-      const response = await fetch(
-        "https://fitnessblog-22c38.firebaseio.com/posts.json",
-        {
-          method: "POST",
-          body: json,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch("https://restapi.fr/api/posts", {
+        method: "POST",
+        body: json,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       const body = await response.json();
       console.log(body);

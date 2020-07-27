@@ -11,7 +11,7 @@ const createPost = (posts) => {
     
     <img src="${post.image}" alt="profile">
     <h2>${post.title} </h2>
-    <p class="post-author">${post.author}</p>
+    <p class="post-author">${post.author} - ${post.category}</p>
     <p class="post-content">
     ${post.content}
     </p>
@@ -20,22 +20,36 @@ const createPost = (posts) => {
     </div>
          
     `;
+    console.log(post._id);
     return postDOM;
   });
+
   postContainerElement.innerHTML = "";
   postContainerElement.append(...postsDOM);
+  const deleteButtons = postContainerElement.querySelectorAll(".btn-danger");
+  deleteButtons.forEach((button) => {
+    button.addEventListener("click", async (event) => {
+      try {
+        const target = event.target;
+        const postId = target.dataset.id;
+        const response = await fetch(`https://restapi.fr/api/posts/${postId}`, {
+          method: "DELETE",
+        });
+        const body = await response.json();
+        console.log(body);
+        fetchPost();
+      } catch (e) {
+        console.log("e : ", e);
+      }
+    });
+  });
 };
 
 const fetchPost = async () => {
   try {
-    const response = await fetch(
-      "https://fitnessblog-22c38.firebaseio.com/posts.json"
-    );
+    const response = await fetch("https://restapi.fr/api/posts");
     const posts = await response.json();
-    if (posts) {
-      const postsArray = Object.values(posts);
-      createPost(postsArray);
-    }
+    createPost(posts);
   } catch (e) {
     console.log("e :", e);
   }
