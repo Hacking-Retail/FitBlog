@@ -33,7 +33,13 @@ form.addEventListener("submit", async (event) => {
 });
 
 const formIsValid = (post) => {
-  if (!post.author || !post.category || !post.content) {
+  if (
+    !post.author ||
+    !post.category ||
+    !post.content ||
+    !post.image ||
+    !post.title
+  ) {
     errors.push("Vous devez renseigner tous les champs ");
   } else {
     errors = [];
